@@ -38,24 +38,24 @@
 
     def find_download(downloads):
       for machine_name, dstruct in sum(downloads.values(), []):
-        if machine_name == '${machineName}':
+        if machine_name == """${machineName}""":
           for ds in dstruct:
-            if ds.name == '${downloadName}':
+            if ds.name == """${downloadName}""":
               return ds
           print >>sys.stderr, \
-            'Unable to find ${downloadName} for ${machineName}!'
+            """Unable to find ${downloadName} for ${machineName}!"""
           print >>sys.stderr, 'Available download types:'
           for ds in dstruct:
             print >>sys.stderr, "  " + ds.name
           raise SystemExit(1)
 
     hb = humblebundle.HumbleApi()
-    hb.login('${email}', '${password}')
+    hb.login("""${email}""", """${password}""")
     products = dict(get_products(hb))
     dstruct = find_download(products)
 
     if dstruct is None:
-      print >>sys.stderr, 'Cannot find download for ${machineName}!'
+      print >>sys.stderr, """Cannot find download for ${machineName}!"""
       print >>sys.stderr, 'Available machine names:'
       for name, dstructs in sorted(products.items(), key=lambda x: x[0]):
         print >>sys.stderr, "  * " + name
@@ -63,7 +63,7 @@
       raise SystemExit(1)
     elif dstruct.md5 != '${md5}':
       print >>sys.stderr, \
-        'MD5 for ${machineName} is not ${md5} but ' + dstruct.md5 + '.'
+        """MD5 for ${machineName} is not ${md5} but """ + dstruct.md5 + '.'
       raise SystemExit(1)
     else:
       print dstruct.url.web
